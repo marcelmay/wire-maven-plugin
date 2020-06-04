@@ -1,0 +1,10 @@
+package de.m3y.maven.wire.it;
+
+option java_package = "de.m3y.maven.wire.it";
+option java_multiple_files = true;
+option java_generic_services = true;
+
+message TestMessage {
+  optional string content = 1;
+}
+

@@ -124,6 +124,31 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-invoker-plugin</artifactId>
+                <configuration>
+                    <projectsDirectory>src/it</projectsDirectory>
+                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                    <pomIncludes>
+                        <pomInclude>*/pom.xml</pomInclude>
+                    </pomIncludes>
+                    <filterProperties>
+                        <injectMavenPluginVersion>${project.version}</injectMavenPluginVersion>
+                    </filterProperties>
+                    <showVersion>true</showVersion>
+                    <showErrors>true</showErrors>
+                    <suppressSummaries>true</suppressSummaries>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>install</goal>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <failIfNoTests>false</failIfNoTests>
