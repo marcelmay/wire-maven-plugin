@@ -16,15 +16,16 @@ import com.squareup.wire.java.ProfileLoader;
 import com.squareup.wire.schema.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
 /**
  * A maven mojo that executes Wire's JavaGenerator.
  */
-@Mojo(name = "generate-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "generate-sources",
+        defaultPhase = LifecyclePhase.GENERATE_SOURCES,
+        threadSafe = true
+)
 public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * The root of the proto source directory.
@@ -79,6 +80,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
                     ? Arrays.asList(protoPaths)
                     : Collections.singletonList(protoSourceDirectory);
             List<String> protoFilesList = Arrays.asList(protoFiles);
+
             Schema schema = loadSchema(directories, protoFilesList);
             Profile profile = loadProfile(schema);
 
@@ -165,6 +167,9 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
         }
         Schema schema = schemaLoader.load();
 
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Found in " + directories + " proto files " + schema.getProtoFiles());
+        }
         getLog().info(String.format("Loaded %s proto files in %s",
                 schema.getProtoFiles().size(), stopwatch));
 
