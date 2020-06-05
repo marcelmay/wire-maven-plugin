@@ -21,6 +21,9 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * A maven mojo that executes Wire's <a href="https://square.github.io/wire/wire_compiler/#java">JavaGenerator</a>.
+ *
+ * Based on original <a href="https://github.com/square/wire/tree/3.0.2/wire-maven-plugin">plugin</a> which got
+ * <a href="https://github.com/square/wire/pull/1326">dropped</a> by the project.
  */
 @Mojo(name = "generate-sources",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
