@@ -131,9 +131,6 @@
                     <pomIncludes>
                         <pomInclude>*/pom.xml</pomInclude>
                     </pomIncludes>
-                    <filterProperties>
-                        <injectMavenPluginVersion>${project.version}</injectMavenPluginVersion>
-                    </filterProperties>
                     <showVersion>true</showVersion>
                     <showErrors>true</showErrors>
                     <suppressSummaries>true</suppressSummaries>
