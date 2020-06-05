@@ -1,4 +1,4 @@
-package com.squareup.wire.mojo;
+package de.m3y.maven.wire;
 
 import java.io.File;
 import java.io.IOException;
