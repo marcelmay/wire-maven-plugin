@@ -1,7 +1,7 @@
 Wire Maven Plugin
 ==================================
 
-The *wire-maven-plugin* wraps the [Wire](https://square.github.io/wire/) protobuf compiler}}.
+The *wire-maven-plugin* wraps the [Wire](https://square.github.io/wire/) protobuf compiler.
 
 [![Maven Central](https://img.shields.io/maven-central/v/de.m3y.maven/wire-maven-plugin.svg)](http://search.maven.org/#search%7Cga%7C1%7Cde.m3y.maven.wire-maven-plugin)
 
