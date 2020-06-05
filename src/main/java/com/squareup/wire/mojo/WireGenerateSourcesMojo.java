@@ -20,7 +20,7 @@ import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
 /**
- * A maven mojo that executes Wire's JavaGenerator.
+ * A maven mojo that executes Wire's <a href="https://square.github.io/wire/wire_compiler/#java">JavaGenerator</a>.
  */
 @Mojo(name = "generate-sources",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
@@ -29,29 +29,64 @@ import org.apache.maven.project.MavenProject;
 public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * The root of the proto source directory.
+     *
+     * If configured, wire.protoPaths will be ignored!
      */
     @Parameter(
             property = "wire.protoSourceDirectory",
             defaultValue = "${project.basedir}/src/main/proto")
     private String protoSourceDirectory;
 
+    /**
+     * The root of one or more proto source directories.
+     *
+     * Only used if wire.protoSourceDirectory is not configured!
+     */
     @Parameter(property = "wire.protoPaths")
     private String[] protoPaths;
 
+    /**
+     * True for emitted types to implement android.os.Parcelable.
+     *
+     * See https://square.github.io/wire/wire_compiler/#java
+     */
     @Parameter(property = "wire.android")
     private boolean emitAndroid;
 
+    /**
+     * True to emit code that uses reflection for reading, writing, and toString
+     * methods which are normally implemented with generated code.
+     *
+     * See https://square.github.io/wire/wire_compiler/#java
+     */
     @Parameter(property = "wire.compact")
     private boolean emitCompact;
 
+    /**
+     * Configures Wire compiler Proto types pruning 'parts to be kept' of the generated sources.
+     *
+     * This list should contain package names (suffixed with `.*`) and type names
+     * only. It should not contain member names.
+     *
+     * Example: 'com.example.pizza.*'
+     *
+     * https://square.github.io/wire/wire_compiler/#pruning
+     */
     @Parameter(property = "wire.includes")
     private String[] includes;
 
+    /**
+     * Configures Wire compiler Proto types pruning 'parts to be removed' of the generated sources.
+     *
+     * This list should contain package names (suffixed with `.*`) and type names
+     * only. It should not contain member names.
+     *
+     * Example: 'com.example.sales.*'
+     *
+     * https://square.github.io/wire/wire_compiler/#pruning
+     */
     @Parameter(property = "wire.excludes")
     private String[] excludes;
-
-    @Parameter(property = "wire.serviceFactory")
-    private String serviceFactory;
 
     /**
      * List of proto files to compile relative to ${protoPaths}.
@@ -59,11 +94,17 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
     @Parameter(property = "wire.protoFiles", required = true)
     private String[] protoFiles;
 
+    /**
+     * Location for the wire compiler generated sources.
+     */
     @Parameter(
             property = "wire.generatedSourceDirectory",
             defaultValue = "${project.build.directory}/generated-sources/wire")
     private String generatedSourceDirectory;
 
+    /**
+     * Current Maven project.
+     */
     @Parameter(
             defaultValue = "${project}",
             required = true,
