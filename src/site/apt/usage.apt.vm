@@ -1,0 +1,56 @@
+ ------
+ Usage
+ ------
+ Marcel May
+ ------
+
+Using the Wire Maven Plugin
+
+ [[1]] Add the plugin to your Maven build
+
+ Replace the version with the latest one (or better, have the version controlled by {{{https://maven.apache.org/pom.html#Plugin_Management}Maven plugin management}}).
+
+ [[2]] Configure
+
+ For configuration details see the {{{./generate-source-mojo.html} inject goal}} description.
+
+ [[3]] Hook plugin into lifecycle for source code generation
+
+ The plugin runs before compilation in the *generate-sources* phase, and adds the generated sources for compilation.
+
+---
+<build>
+  ...
+  <plugins>
+
+    <plugin>
+      <!-- (1) Add the plugin to your Maven build -->
+      <groupId>de.m3y.maven</groupId>
+      <artifactId>wire-maven-plugin</artifactId>
+      <version>${project.version}</version>
+
+      <!-- (2) Configure injections -->
+      <configuration>
+
+      </configuration>
+
+      <!-- (3) Hook plugin into lifecycle for source code generation-->
+      <executions>
+        <execution>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>generate-sources</goal>
+            </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+  </plugins>
+  ...
+</build>
+---
+
+ Generated sources can be found by default in ${project.build.directory}/generated-sources/wire ,
+ which the plugin automatically adds to the compilation source roots of your project.
+
+

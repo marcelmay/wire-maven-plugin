@@ -1,0 +1,16 @@
+ ------
+ Intro
+ ------
+ Marcel May
+ ------
+
+Introduction
+
+  The Wire Maven Plugin wraps the {{{https://square.github.io/wire/}Wire protobuf compiler}}.
+
+  The current plugin only supports Java code generation.
+
+  This is a (resurrected) {{{https://github.com/square/wire/tree/3.0.2/wire-maven-plugin}fork}} of the original plugin by the Wire project,
+  which unfortunately got {{{https://github.com/square/wire/pull/1326}dropped}}.
+
+  See {{{./usage.html} usage}} or {{{https://github.com/marcelmay/wire-maven-plugin/tree/master/src/it} integration test examples}}
