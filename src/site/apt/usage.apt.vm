@@ -12,7 +12,7 @@ Using the Wire Maven Plugin
 
  [[2]] Configure
 
- For configuration details see the {{{./generate-source-mojo.html} generate-sources goal}} description.
+ For configuration details see the {{{./generate-sources-mojo.html} generate-sources goal}} description.
 
  [[3]] Hook plugin into lifecycle for source code generation
 
