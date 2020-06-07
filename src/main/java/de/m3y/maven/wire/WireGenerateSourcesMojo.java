@@ -53,7 +53,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
      *
      * See https://square.github.io/wire/wire_compiler/#java
      */
-    @Parameter(property = "wire.android")
+    @Parameter(property = "wire.android", defaultValue = "false")
     private boolean emitAndroid;
 
     /**
@@ -62,7 +62,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
      *
      * See https://square.github.io/wire/wire_compiler/#java
      */
-    @Parameter(property = "wire.compact")
+    @Parameter(property = "wire.compact", defaultValue = "false")
     private boolean emitCompact;
 
     /**
