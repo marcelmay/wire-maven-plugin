@@ -1,0 +1,92 @@
+Using the Wire Maven Plugin
+===========================
+
+1. Put your ProtoBuf definition in ```src/main/proto```  
+    This is the default location where the plugin expects proto files.
+
+2. Configure plugin in pom.xml
+    1. Add the plugin to your Maven build  
+       Replace the version with the latest one - or better, have the version controlled by [Maven plugin management](https://maven.apache.org/pom.html#Plugin_Management).
+    2. Configure plugin parameters  
+       For configuration details see the [generate-sources goal](./generate-sources-mojo.html) description.
+    3. Hook the plugin into the [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#lifecycle-reference) for source code generation.  
+       The plugin runs before compilation in the *generate-sources* phase, and adds the generated sources for compilation.  
+
+3. Add Wire runtime dependency in pom.xml (required by Wire compiler generated sources)
+    ```xml
+    <dependency>
+      <groupId>com.squareup.wire</groupId>
+      <artifactId>wire-runtime</artifactId>
+      <version>3.2.2</version> <!-- Check for latest version -->
+    </dependency>
+    ```
+
+Generated sources can be found by default in \${project.build.directory}/generated-sources/wire ,
+which the plugin automatically adds to the compilation source roots of your project.
+
+Example configuration
+---------------------
+```xml  
+<project ...>
+...
+  <dependencies>
+    <!-- (3) Add Wire runtime dependency -->
+    <dependency>
+      <groupId>com.squareup.wire</groupId>
+      <artifactId>wire-runtime</artifactId>
+      <version>3.2.2</version> <!-- Check for latest version -->
+    </dependency>
+  </dependencies>
+...
+  <build>
+    ...
+    <plugins>
+  
+      <plugin>
+        <!-- (2.1) Add the plugin to your Maven build -->
+        <groupId>de.m3y.maven</groupId>
+        <artifactId>wire-maven-plugin</artifactId>
+        <version>${project.version}</version>
+  
+        <!-- (2.2) Optionally configure plugin / code generation.
+                 Defaults should work nicely, unless you want to optimize (Android, pruning).
+  
+                 See generate-sources goal description and https://square.github.io/wire/wire_compiler/#java documentation.
+        -->
+        <configuration>
+          <!-- Example options with defaults
+          <emitAndroid>false</emitAndroid>
+          <emitAndroidAnnotations>false</emitAndroidAnnotations>
+          <emitCompact>false</emitCompact>
+          <excludes>
+            <exclude>ex.clude.me.*</exclude>
+          </excludes>
+          <includes>
+            <include>keep.me.*</include>
+          </includes>
+          <generatedSourceDirectory>\${project.build.directory}/generated-sources/wire</generatedSourceDirectory>
+          <protoFiles>
+          </protoFiles>
+          <protoPaths>
+          </protoPaths>
+          <protoSourceDirectory>\${project.basedir}/src/main/proto</protoSourceDirectory>
+          -->
+        </configuration>
+  
+        <!-- (2.3) Hook plugin into lifecycle for source code generation-->
+        <executions>
+          <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                  <goal>generate-sources</goal>
+              </goals>
+          </execution>
+        </executions>
+      </plugin>
+  
+    </plugins>
+    ...
+  </build>
+</project>
+```  
+
