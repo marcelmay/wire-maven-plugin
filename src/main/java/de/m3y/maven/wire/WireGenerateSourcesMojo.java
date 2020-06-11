@@ -31,6 +31,31 @@ import org.apache.maven.project.MavenProject;
 )
 public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
+     * True for emitted types to implement android.os.Parcelable.
+     *
+     * See https://square.github.io/wire/wire_compiler/#java
+     */
+    @Parameter(property = "wire.android", defaultValue = "false")
+    private boolean emitAndroid;
+
+    /**
+     * True to enable the androidx.annotation.Nullable annotation where applicable.
+     *
+     * See https://square.github.io/wire/wire_compiler/#java
+     */
+    @Parameter(property = "wire.androidAnnotations", defaultValue = "false")
+    private boolean emitAndroidAnnotations;
+
+    /**
+     * True to emit code that uses reflection for reading, writing, and toString
+     * methods which are normally implemented with generated code.
+     *
+     * See https://square.github.io/wire/wire_compiler/#java
+     */
+    @Parameter(property = "wire.compact", defaultValue = "false")
+    private boolean emitCompact;
+
+    /**
      * The root of the proto source directory.
      *
      * If configured, wire.protoPaths will be ignored!
@@ -47,23 +72,6 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
      */
     @Parameter(property = "wire.protoPaths")
     private String[] protoPaths;
-
-    /**
-     * True for emitted types to implement android.os.Parcelable.
-     *
-     * See https://square.github.io/wire/wire_compiler/#java
-     */
-    @Parameter(property = "wire.android", defaultValue = "false")
-    private boolean emitAndroid;
-
-    /**
-     * True to emit code that uses reflection for reading, writing, and toString
-     * methods which are normally implemented with generated code.
-     *
-     * See https://square.github.io/wire/wire_compiler/#java
-     */
-    @Parameter(property = "wire.compact", defaultValue = "false")
-    private boolean emitCompact;
 
     /**
      * Configures Wire compiler Proto types pruning 'parts to be kept' of the generated sources.
@@ -135,6 +143,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
             JavaGenerator javaGenerator = JavaGenerator.get(schema)
                     .withAndroid(emitAndroid)
+                    .withAndroidAnnotations(emitAndroidAnnotations)
                     .withCompact(emitCompact)
                     .withProfile(profile);
 
