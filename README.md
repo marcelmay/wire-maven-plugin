@@ -82,8 +82,8 @@ Development
 * Release
 
     ```
-    mvn release:prepare -Prelease
-    mvn release:perform -Prelease
+    mvn release:prepare
+    mvn release:perform
     ```
 
 * Deploy snapshot
