@@ -75,7 +75,9 @@ Development
 
 * Build the site
 
-  ```mvn clean install integration-test site -Psite```
+  ```mvn site -Psite```
+  or
+  ```mvn site-deploy -Psite```
 
 * Release
 
