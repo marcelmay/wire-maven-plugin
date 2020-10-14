@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.m3y.maven</groupId>
     <artifactId>wire-maven-plugin</artifactId>
@@ -14,6 +15,7 @@
     </prerequisites>
 
     <properties>
+        <wire.version>3.4.0</wire.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -50,19 +52,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-            <version>1.11.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.squareup.wire</groupId>
-            <artifactId>wire-schema</artifactId>
-            <version>3.2.2</version>
+            <artifactId>wire-compiler</artifactId>
+            <version>${wire.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.wire</groupId>
             <artifactId>wire-java-generator</artifactId>
-            <version>3.2.2</version>
+            <version>${wire.version}</version>
         </dependency>
 
         <dependency>

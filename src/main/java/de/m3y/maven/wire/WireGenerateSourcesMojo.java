@@ -2,9 +2,11 @@ package de.m3y.maven.wire;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Stopwatch;
 import com.squareup.javapoet.ClassName;
@@ -12,16 +14,17 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.wire.java.JavaGenerator;
 import com.squareup.wire.java.Profile;
-import com.squareup.wire.java.ProfileLoader;
 import com.squareup.wire.schema.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
  * A maven mojo that executes Wire's <a href="https://square.github.io/wire/wire_compiler/#java">JavaGenerator</a>.
- *
+ * <p>
  * Based on original <a href="https://github.com/square/wire/tree/3.0.2/wire-maven-plugin">plugin</a> which got
  * <a href="https://github.com/square/wire/pull/1326">dropped</a> by the project.
  */
@@ -32,7 +35,7 @@ import org.apache.maven.project.MavenProject;
 public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * True for emitted types to implement android.os.Parcelable.
-     *
+     * <p>
      * See https://square.github.io/wire/wire_compiler/#java
      */
     @Parameter(property = "wire.android", defaultValue = "false")
@@ -40,7 +43,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
     /**
      * True to enable the androidx.annotation.Nullable annotation where applicable.
-     *
+     * <p>
      * See https://square.github.io/wire/wire_compiler/#java
      */
     @Parameter(property = "wire.androidAnnotations", defaultValue = "false")
@@ -49,7 +52,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * True to emit code that uses reflection for reading, writing, and toString
      * methods which are normally implemented with generated code.
-     *
+     * <p>
      * See https://square.github.io/wire/wire_compiler/#java
      */
     @Parameter(property = "wire.compact", defaultValue = "false")
@@ -57,7 +60,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
     /**
      * The root of the proto source directory.
-     *
+     * <p>
      * If configured, wire.protoPaths will be ignored!
      */
     @Parameter(
@@ -67,7 +70,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
     /**
      * The root of one or more proto source directories.
-     *
+     * <p>
      * Only used if wire.protoSourceDirectory is not configured!
      */
     @Parameter(property = "wire.protoPaths")
@@ -75,12 +78,12 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
     /**
      * Configures Wire compiler Proto types pruning 'parts to be kept' of the generated sources.
-     *
+     * <p>
      * This list should contain package names (suffixed with `.*`) and type names
      * only. It should not contain member names.
-     *
+     * <p>
      * Example: 'com.example.pizza.*'
-     *
+     * <p>
      * https://square.github.io/wire/wire_compiler/#pruning
      */
     @Parameter(property = "wire.includes")
@@ -88,12 +91,12 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
 
     /**
      * Configures Wire compiler Proto types pruning 'parts to be removed' of the generated sources.
-     *
+     * <p>
      * This list should contain package names (suffixed with `.*`) and type names
      * only. It should not contain member names.
-     *
+     * <p>
      * Example: 'com.example.sales.*'
-     *
+     * <p>
      * https://square.github.io/wire/wire_compiler/#pruning
      */
     @Parameter(property = "wire.excludes")
@@ -133,8 +136,22 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
                     : Collections.singletonList(protoSourceDirectory);
             List<String> protoFilesList = Arrays.asList(protoFiles);
 
-            Schema schema = loadSchema(directories, protoFilesList);
-            Profile profile = loadProfile(schema);
+            Stopwatch stopwatch1 = Stopwatch.createStarted();
+
+            SchemaLoader schemaLoader = new SchemaLoader(FileSystems.getDefault());
+            schemaLoader.initRoots(
+                    directories.stream().map(Location::get).collect(Collectors.toList()),
+                    protoFilesList.stream().map(Location::get).collect(Collectors.toList())
+            );
+            Schema schema = schemaLoader.loadSchema();
+
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Found in " + directories + " proto files " + schema.getProtoFiles());
+            }
+            getLog().info(String.format("Loaded %s proto files in %s",
+                    schema.getProtoFiles().size(), stopwatch1));
+
+            Profile profile = schemaLoader.loadProfile(emitAndroid ? "android" : "java", schema);
 
             PruningRules pruningRules = pruningRules();
             if (!pruningRules.isEmpty()) {
@@ -206,34 +223,6 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
             result += protoFile.getTypes().size();
         }
         return result;
-    }
-
-    private Schema loadSchema(List<String> directories, List<String> protos) throws IOException {
-        Stopwatch stopwatch = Stopwatch.createStarted();
-
-        SchemaLoader schemaLoader = new SchemaLoader();
-        for (String directory : directories) {
-            schemaLoader.addSource(new File(directory));
-        }
-        for (String proto : protos) {
-            schemaLoader.addProto(proto);
-        }
-        Schema schema = schemaLoader.load();
-
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Found in " + directories + " proto files " + schema.getProtoFiles());
-        }
-        getLog().info(String.format("Loaded %s proto files in %s",
-                schema.getProtoFiles().size(), stopwatch));
-
-        return schema;
-    }
-
-    private Profile loadProfile(Schema schema) throws IOException {
-        String profileName = emitAndroid ? "android" : "java";
-        return new ProfileLoader(profileName)
-                .schema(schema)
-                .load();
     }
 
     private void writeJavaFile(ClassName javaTypeName, TypeSpec typeSpec, Location location)
