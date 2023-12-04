@@ -15,7 +15,7 @@
     </prerequisites>
 
     <properties>
-        <wire.version>3.4.0</wire.version>
+        <wire.version>3.5.0</wire.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
