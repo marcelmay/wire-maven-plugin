@@ -36,7 +36,7 @@ Quickstart
        <plugin>
          <groupId>de.m3y.maven</groupId>
          <artifactId>wire-maven-plugin</artifactId>
-         <version>1.0</version> <!-- Check for latest version! -->
+         <version>1.2</version> <!-- Check for latest version! -->
          <executions>
            <execution>
                <phase>generate-sources</phase>
@@ -56,7 +56,7 @@ Quickstart
    <dependency>
       <groupId>com.squareup.wire</groupId>                                                                                             
       <artifactId>wire-runtime</artifactId>                                                                                            
-      <version>3.2.2</version> <!-- Check for latest version -->
+      <version>3.4.0</version> <!-- Check for latest version -->
    </dependency>
    ```
 
@@ -71,7 +71,7 @@ Development
 
   ```mvn clean install```
 
-  Make sure you got [Maven 3.6+][maven_download] or higher.
+  Make sure you got [Maven 3.9+][maven_download] or higher.
 
 * Build the site
 
