@@ -56,7 +56,7 @@ Quickstart
    <dependency>
       <groupId>com.squareup.wire</groupId>                                                                                             
       <artifactId>wire-runtime</artifactId>                                                                                            
-      <version>3.4.0</version> <!-- Check for latest version -->
+      <version>3.5.0</version> <!-- Check for latest version -->
    </dependency>
    ```
 
