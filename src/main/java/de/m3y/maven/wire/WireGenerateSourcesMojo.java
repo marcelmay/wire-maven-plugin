@@ -13,7 +13,6 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.wire.java.JavaGenerator;
-import com.squareup.wire.java.Profile;
 import com.squareup.wire.schema.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -35,16 +34,14 @@ import org.apache.maven.project.MavenProject;
 public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * True for emitted types to implement android.os.Parcelable.
-     * <p>
-     * See https://square.github.io/wire/wire_compiler/#java
+     * @see <a href="https://square.github.io/wire/wire_compiler/#java">Customizing Output</a>
      */
     @Parameter(property = "wire.android", defaultValue = "false")
     private boolean emitAndroid;
 
     /**
      * True to enable the androidx.annotation.Nullable annotation where applicable.
-     * <p>
-     * See https://square.github.io/wire/wire_compiler/#java
+     * @see <a href="https://square.github.io/wire/wire_compiler/#java">Customizing Output</a>
      */
     @Parameter(property = "wire.androidAnnotations", defaultValue = "false")
     private boolean emitAndroidAnnotations;
@@ -52,8 +49,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
     /**
      * True to emit code that uses reflection for reading, writing, and toString
      * methods which are normally implemented with generated code.
-     * <p>
-     * See https://square.github.io/wire/wire_compiler/#java
+     * @see <a href="https://square.github.io/wire/wire_compiler/#java">Customizing Output</a>
      */
     @Parameter(property = "wire.compact", defaultValue = "false")
     private boolean emitCompact;
@@ -84,7 +80,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
      * <p>
      * Example: 'com.example.pizza.*'
      * <p>
-     * https://square.github.io/wire/wire_compiler/#pruning
+     * @see <a href="https://square.github.io/wire/wire_compiler/#pruning">Pruning</a>
      */
     @Parameter(property = "wire.includes")
     private String[] includes;
@@ -96,8 +92,7 @@ public class WireGenerateSourcesMojo extends AbstractMojo {
      * only. It should not contain member names.
      * <p>
      * Example: 'com.example.sales.*'
-     * <p>
-     * https://square.github.io/wire/wire_compiler/#pruning
+     * @see <a href="https://square.github.io/wire/wire_compiler/#pruning">Pruning</a>
      */
     @Parameter(property = "wire.excludes")
     private String[] excludes;

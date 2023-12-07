@@ -16,8 +16,8 @@ Using the Wire Maven Plugin
     ```xml
     <dependency>
       <groupId>com.squareup.wire</groupId>
-      <artifactId>wire-runtime</artifactId>
-      <version>3.5.0</version> <!-- Check for latest version -->
+      <artifactId>wire-runtime-jvm</artifactId>
+      <version>4.9.3</version> <!-- Check for latest version -->
     </dependency>
     ```
 
@@ -27,14 +27,14 @@ which the plugin automatically adds to the compilation source roots of your proj
 Example configuration
 ---------------------
 ```xml  
-<project ...>
+<project>
 ...
   <dependencies>
     <!-- (3) Add Wire runtime dependency -->
     <dependency>
       <groupId>com.squareup.wire</groupId>
-      <artifactId>wire-runtime</artifactId>
-      <version>3.5.0</version> <!-- Check for latest version -->
+      <artifactId>wire-runtime-jvm</artifactId>
+      <version>4.9.3</version> <!-- Check for latest version -->
     </dependency>
   </dependencies>
 ...

@@ -16,7 +16,7 @@ What is it good for?
 * Supports Java code generator
 * Kotlin code generator is on the TODO list
 
-Check out the [plugin web site][site] including [usage][site_usage] for details for Maven goal [generate-sources](https://marcelmay.github.io/wire-maven-plugin/generate-sources-mojo.html).
+Check out the [plugin website][site] including [usage][site_usage] for details for Maven goal [generate-sources](https://marcelmay.github.io/wire-maven-plugin/generate-sources-mojo.html).
 
 [site]: http://marcelmay.github.io/wire-maven-plugin/
 [site_usage]: https://marcelmay.github.io/wire-maven-plugin/usage.html
