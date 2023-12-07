@@ -36,7 +36,7 @@ Quickstart
        <plugin>
          <groupId>de.m3y.maven</groupId>
          <artifactId>wire-maven-plugin</artifactId>
-         <version>1.2</version> <!-- Check for latest version! -->
+         <version>1.3</version> <!-- Check for latest version! -->
          <executions>
            <execution>
                <phase>generate-sources</phase>
@@ -56,7 +56,7 @@ Quickstart
    <dependency>
       <groupId>com.squareup.wire</groupId>                                                                                             
       <artifactId>wire-runtime</artifactId>                                                                                            
-      <version>3.5.0</version> <!-- Check for latest version -->
+      <version>4.9.3</version> <!-- Check for latest version -->
    </dependency>
    ```
 
